@@ -16,7 +16,9 @@ public class Loan {
     @ManyToOne
     @JoinColumn(name="library_item_id")
     private LibraryItem loanedItem;
+    @Column(name="loan_start")
     private LocalDate loanStart;
+    @Column(name="loan_end")
     private LocalDate loanEnd;
     private LocalDate restitution;
 

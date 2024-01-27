@@ -12,20 +12,25 @@ public class UserDAO {
         this.em = em;
     }
 
-    public void saveUser(User user){
-        EntityTransaction transaction = em.getTransaction();
-        transaction.begin();
-        em.persist(user);
-        transaction.commit();
-        System.out.println("User " + user.getName() + " " + user.getSurname() + " has been saved.");
+    public void saveUser(User user) {
+        try {
+            EntityTransaction transaction = em.getTransaction();
+            transaction.begin();
+            em.persist(user);
+            transaction.commit();
+            System.out.println("User " + user.getName() + " " + user.getSurname() + " has been saved.");
+        } catch (Exception e) {
+            System.err.println("Failed to save user: " + e.getMessage());
+        }
     }
 
-    public User findByCard (Long cardNumber){
+
+    public User findUserByCard (Long cardNumber){
         return em.find(User.class, cardNumber);
     }
 
     public void deleteUser(Long cardNumber){
-        User foundUser = this.findByCard(cardNumber);
+        User foundUser = this.findUserByCard(cardNumber);
         if(foundUser != null){
             EntityTransaction transaction = em.getTransaction();
             transaction.begin();

@@ -5,18 +5,22 @@ import java.util.Date;
 import java.util.Set;
 
 @Entity
-@Table(name="users")
+@Table(name = "users")
 public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name="card_number")
+    private Long cardNumber;
     private String name;
     private String surname;
+    @Column(name="date_of_birth")
     private Date dateOfBirth;
-@Id
-@GeneratedValue(strategy = GenerationType.AUTO)
-    private Long cardNumber;
-@OneToMany(mappedBy = "user")
+
+    @OneToMany(mappedBy = "user")
     private Set<Loan> userLoans;
 
-    public User(){}
+    public User() {
+    }
 
     public User(String name, String surname, Date dateOfBirth) {
         this.name = name;
@@ -70,8 +74,6 @@ public class User {
                 "name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
                 ", dateOfBirth=" + dateOfBirth +
-                ", cardNumber=" + cardNumber +
-                ", userLoans=" + userLoans +
                 '}';
     }
 }

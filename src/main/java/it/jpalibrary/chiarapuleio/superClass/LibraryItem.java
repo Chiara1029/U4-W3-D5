@@ -11,10 +11,14 @@ import javax.persistence.*;
 public abstract class LibraryItem {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name="item_id")
     private Long itemId;
+    @Column(name="isbn_code")
     private String isbnCode;
     private String title;
+    @Column(name="publication_year")
     private int publicationYear;
+    @Column(name="number_of_pages")
     private int numPages;
 
     public LibraryItem(String title, int publicationYear, int numPages) {

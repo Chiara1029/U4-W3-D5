@@ -11,6 +11,9 @@ public class Book extends LibraryItem {
     private String author;
     private String genre;
 
+    public Book(){
+        super("", 0, 0);
+    }
     public Book(String title, int publicationYear, int numPages, String author, String genre) {
         super(title, publicationYear, numPages);
         this.author = author;

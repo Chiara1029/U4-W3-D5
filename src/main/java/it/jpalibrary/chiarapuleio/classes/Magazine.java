@@ -6,11 +6,18 @@ import it.jpalibrary.chiarapuleio.superClass.LibraryItem;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import java.util.Random;
 @Entity
 @DiscriminatorValue("magazine")
 public class Magazine extends LibraryItem {
+    @Enumerated(EnumType.STRING)
     private Periodicity periodicity;
+
+    public Magazine(){
+        super("", 0, 0);
+    }
 
     public Magazine(String title, int publicationYear, int numPages, Periodicity periodicity) {
         super(title, publicationYear, numPages);

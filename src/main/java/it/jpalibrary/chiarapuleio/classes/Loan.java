@@ -1,21 +1,32 @@
 package it.jpalibrary.chiarapuleio.classes;
 
-import java.time.LocalDate;
+import it.jpalibrary.chiarapuleio.superClass.LibraryItem;
 
+import javax.persistence.*;
+import java.time.LocalDate;
+@Entity
+@Table(name="loans")
 public class Loan {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+    @ManyToOne
+    @JoinColumn(name="user_card")
     private User user;
-    private String loanedItem;
+    @ManyToOne
+    @JoinColumn(name="library_item_id")
+    private LibraryItem loanedItem;
     private LocalDate loanStart;
     private LocalDate loanEnd;
     private LocalDate restitution;
 
     public Loan(){}
 
-    public Loan(User user, String loanedItem, LocalDate loanStart, LocalDate loanEnd, LocalDate restitution) {
+    public Loan(User user, LibraryItem loanedItem, LocalDate loanStart, LocalDate restitution) {
         this.user = user;
         this.loanedItem = loanedItem;
         this.loanStart = loanStart;
-        this.loanEnd = loanEnd;
+        this.loanEnd = loanStart.plusDays(30);
         this.restitution = restitution;
     }
 
@@ -27,11 +38,11 @@ public class Loan {
         this.user = user;
     }
 
-    public String getLoanedItem() {
+    public LibraryItem getLoanedItem() {
         return loanedItem;
     }
 
-    public void setLoanedItem(String loanedItem) {
+    public void setLoanedItem(LibraryItem loanedItem) {
         this.loanedItem = loanedItem;
     }
 

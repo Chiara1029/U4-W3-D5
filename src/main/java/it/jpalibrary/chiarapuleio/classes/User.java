@@ -1,20 +1,27 @@
 package it.jpalibrary.chiarapuleio.classes;
 
-import java.time.LocalDate;
+import javax.persistence.*;
+import java.util.Date;
+import java.util.Set;
 
+@Entity
+@Table(name="users")
 public class User {
     private String name;
     private String surname;
-    private LocalDate dateOfBirth;
-    private int cardNumber;
+    private Date dateOfBirth;
+@Id
+@GeneratedValue(strategy = GenerationType.AUTO)
+    private Long cardNumber;
+@OneToMany(mappedBy = "user")
+    private Set<Loan> userLoans;
 
     public User(){}
 
-    public User(String name, String surname, LocalDate dateOfBirth, int cardNumber) {
+    public User(String name, String surname, Date dateOfBirth) {
         this.name = name;
         this.surname = surname;
         this.dateOfBirth = dateOfBirth;
-        this.cardNumber = cardNumber;
     }
 
     public String getName() {
@@ -33,20 +40,28 @@ public class User {
         this.surname = surname;
     }
 
-    public LocalDate getDateOfBirth() {
+    public Date getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(LocalDate dateOfBirth) {
+    public void setDateOfBirth(Date dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public int getCardNumber() {
+    public long getCardNumber() {
         return cardNumber;
     }
 
-    public void setCardNumber(int cardNumber) {
+    public void setCardNumber(long cardNumber) {
         this.cardNumber = cardNumber;
+    }
+
+    public Set<Loan> getUserLoans() {
+        return userLoans;
+    }
+
+    public void setUserLoans(Set<Loan> userLoans) {
+        this.userLoans = userLoans;
     }
 
     @Override
@@ -56,6 +71,7 @@ public class User {
                 ", surname='" + surname + '\'' +
                 ", dateOfBirth=" + dateOfBirth +
                 ", cardNumber=" + cardNumber +
+                ", userLoans=" + userLoans +
                 '}';
     }
 }

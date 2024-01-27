@@ -1,37 +1,46 @@
 package it.jpalibrary.chiarapuleio;
 
-import it.jpalibrary.chiarapuleio.classes.Book;
-import it.jpalibrary.chiarapuleio.classes.LibraryArchive;
-import it.jpalibrary.chiarapuleio.classes.Magazine;
-import it.jpalibrary.chiarapuleio.enums.Periodicity;
+import com.github.javafaker.Faker;
+import it.jpalibrary.chiarapuleio.classes.User;
+import it.jpalibrary.chiarapuleio.dao.LibraryArchiveDAO;
+import it.jpalibrary.chiarapuleio.dao.LoanDAO;
+import it.jpalibrary.chiarapuleio.dao.UserDAO;
 
-import java.io.IOException;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import java.util.Locale;
+import java.util.function.Supplier;
 
 public class Application {
-    public static void main(String[] args) throws IOException {
+    private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("libraryarchive");
+    public static Supplier<User> createUsers = () -> {
+        Faker faker = new Faker(Locale.ENGLISH);
+        return new User (faker.name().firstName(), faker.name().lastName(), faker.date().birthday());
+    };
+    public static void main(String[] args)  {
+        EntityManager em = emf.createEntityManager();
+        try{
+            LibraryArchiveDAO archiveDAO = new LibraryArchiveDAO(em);
+            LoanDAO loanDAO = new LoanDAO(em);
+            UserDAO userDAO = new UserDAO(em);
+        } catch {}
 
-        LibraryArchive archive = new LibraryArchive();
-        archive.createAll(20,20);
-        System.out.println(archive);
-
-        System.out.println("---ADD---");
-        Book lotr = new Book("Lord of the Rings", 1950, 1500, "Tolkien", "Fantasy");
-        archive.addBook(lotr);
-        Magazine ciak = new Magazine("Ciak", 2019, 60, Periodicity.MONTHLY);
-        archive.addMagazine(ciak);
 
 
-        System.out.println("---REMOVE---");
-        archive.removeMagazine(1245);
-        archive.removeBook(3456);
+//        User newUser = createUsers.get();
+//        System.out.println(newUser);
 
-        System.out.println("---SEARCH---");
-        archive.searchBookIsbn(4957);
-        archive.searchBookByYear(1950);
-        archive.searchMagazineIsbn(1023);
-        archive.searchMagazineByYear(2001);
-        archive.searchByAuthor("Tolkien");
-
+//
+//        Book ciao = new Book("ciao", 1998, 789, "Ciao", "Ciao");
+//        System.out.println(ciao);
+//
+//        LibraryArchive archive = new LibraryArchive();
+//        archive.createAll(10,10);
+//        System.out.println(archive);
+//
+//        Loan loanCiao = new Loan(chiara, ciao, LocalDate.of(2024, 1, 1), LocalDate.now());
+//        System.out.println(loanCiao);
     }
 
 }

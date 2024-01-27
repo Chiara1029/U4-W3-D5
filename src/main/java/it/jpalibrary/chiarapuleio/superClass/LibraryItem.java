@@ -1,24 +1,38 @@
 package it.jpalibrary.chiarapuleio.superClass;
 
 
-import java.util.Random;
+import com.github.javafaker.Faker;
 
+import javax.persistence.*;
+
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@Table(name="library_items")
 public abstract class LibraryItem {
-    private int isbnCode;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long itemId;
+    private String isbnCode;
     private String title;
     private int publicationYear;
     private int numPages;
 
     public LibraryItem(String title, int publicationYear, int numPages) {
-        Random random = new Random();
-        this.isbnCode = random.nextInt(3000 - 2000) + 2000;;
+        Faker faker = new Faker();
+        String isbnRand = faker.code().isbn13();
+        this.isbnCode = isbnRand;
         this.title = title;
         this.publicationYear = publicationYear;
         this.numPages = numPages;
     }
-
-    public void setIsbnCode(int isbnCode) {
+    public String getIsbnCode() {
+        return isbnCode;
+    }
+    public void setIsbnCode(String isbnCode) {
         this.isbnCode = isbnCode;
+    }
+    public String getTitle() {
+        return title;
     }
 
     public void setTitle(String title) {
@@ -33,13 +47,6 @@ public abstract class LibraryItem {
         this.numPages = numPages;
     }
 
-    public int getIsbnCode() {
-        return isbnCode;
-    }
-
-    public String getTitle() {
-        return title;
-    }
 
     public int getPublicationYear() {
         return publicationYear;

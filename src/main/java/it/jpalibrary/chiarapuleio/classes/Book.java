@@ -2,6 +2,11 @@ package it.jpalibrary.chiarapuleio.classes;
 
 import it.jpalibrary.chiarapuleio.superClass.LibraryItem;
 
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+
+@Entity
+@DiscriminatorValue("book")
 public class Book extends LibraryItem {
     private String author;
     private String genre;

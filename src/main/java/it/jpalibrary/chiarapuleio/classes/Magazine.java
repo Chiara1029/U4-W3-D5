@@ -4,8 +4,11 @@ package it.jpalibrary.chiarapuleio.classes;
 import it.jpalibrary.chiarapuleio.enums.Periodicity;
 import it.jpalibrary.chiarapuleio.superClass.LibraryItem;
 
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
 import java.util.Random;
-
+@Entity
+@DiscriminatorValue("magazine")
 public class Magazine extends LibraryItem {
     private Periodicity periodicity;
 

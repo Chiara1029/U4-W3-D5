@@ -3,6 +3,7 @@ package it.jpalibrary.chiarapuleio;
 import com.github.javafaker.Faker;
 import it.jpalibrary.chiarapuleio.classes.Book;
 import it.jpalibrary.chiarapuleio.classes.Loan;
+import it.jpalibrary.chiarapuleio.classes.Magazine;
 import it.jpalibrary.chiarapuleio.classes.User;
 import it.jpalibrary.chiarapuleio.dao.LibraryArchiveDAO;
 import it.jpalibrary.chiarapuleio.dao.LoanDAO;
@@ -33,28 +34,35 @@ public class Application {
 
 
         System.out.println("----- CREATE USERS -----");
-//        int usersToCreate = 10;
-//        for (int i = 0; i < usersToCreate; i++) {
-//            User newUser = createUsers.get();
-//            userDAO.saveUser(newUser);
-//        }
+        //ho utilizzato un for loop per creare un certo numero di Users con Faker, salvandoli automaticamente nel db con il metodo .saveUser()
+
+        int usersToCreate = 10;
+        for (int i = 0; i < usersToCreate; i++) {
+            User newUser = createUsers.get();
+            userDAO.saveUser(newUser);
+        }
 
 
         System.out.println("----- CREATE ARCHIVE ITEMS -----");
-//        int booksToCreate = 10;
-//        Faker faker = new Faker(Locale.ENGLISH);
-//        for (int i = 0; i < booksToCreate; i++) {
-//            Book newBook = new Book(faker.book().title(), faker.number().numberBetween(1800, 2024), faker.number().numberBetween(80, 500), faker.book().author(), faker.book().genre());
-//            archiveDAO.saveBook(newBook);
-//        }
-//        int magazinesToCreate = 10;
-//        for (int i = 0; i < magazinesToCreate; i++) {
-//            Magazine newMagazine = new Magazine(faker.book().title(), faker.number().numberBetween(1994, 2024), faker.number().numberBetween(20, 100), getRandomPeriodicity());
-//            archiveDAO.saveMagazine(newMagazine);
-//        }
+        //ho utilizzato lo stesso metodo utilizzato per gli Users, avendo bisogno di due istanze differenti ho creato due metodi differenti, uno per Book e uno per Magazine
+
+        int booksToCreate = 10;
+        Faker faker = new Faker(Locale.ENGLISH);
+        for (int i = 0; i < booksToCreate; i++) {
+            Book newBook = new Book(faker.book().title(), faker.number().numberBetween(1800, 2024), faker.number().numberBetween(80, 500), faker.book().author(), faker.book().genre());
+            archiveDAO.saveBook(newBook);
+        }
+        int magazinesToCreate = 10;
+        for (int i = 0; i < magazinesToCreate; i++) {
+            Magazine newMagazine = new Magazine(faker.book().title(), faker.number().numberBetween(1994, 2024), faker.number().numberBetween(20, 100), getRandomPeriodicity());
+            archiveDAO.saveMagazine(newMagazine);
+        }
 
 
         System.out.println("----- CREATE LOANS -----");
+        //dato un numero di tessera risalgo a un utente specifico di tipo User, stessa cosa per Book ma con la ricerca per ISBN
+        //una volta ottenuti i due oggetti, li passo al costruttore di Loan inserendo le date di inizio del prestito e di effettiva restituzione
+        //per inserire il prestito all'interno della lista ho usato il get con il metodo .add e ho risalvato l'utente con il dato aggiornato
         User user = userDAO.findUserByCard(10L);
         Book book = archiveDAO.findBookByIsbn("9790846878963");
         Loan loan = new Loan(user, book, LocalDate.of(2024,1,1), LocalDate.of(2024,2,1));
@@ -67,6 +75,7 @@ public class Application {
         System.out.println("----- REMOVE BY ISBN -----");
         archiveDAO.deleteBook("9781604165326");
         archiveDAO.deleteMagazine("9781679433153");
+
 
 
         System.out.println("----- SEARCH BY ISBN -----");
@@ -93,6 +102,7 @@ public class Application {
 
 
         System.out.println("----- SEARCH LOANS -----");
+        //qui ho dovuto usare direttamente l'oggetto User come parametro per come ho inserito le relazioni tra le entities
         System.out.println(loanDAO.searchLibraryOnLoanByUser(user));
         System.out.println(loanDAO.searchExpiredLoan(user));
 
@@ -100,6 +110,7 @@ public class Application {
         em.close();
     }
 
+    //non potendo usare un Faker per la periodicità, per creare delle istanze randomiche ho creato un metodo per randomizzare la periodicità delle riviste
     static Periodicity getRandomPeriodicity() {
         Periodicity[] options = Periodicity.values();
         int indexRand = new Random().nextInt(options.length);

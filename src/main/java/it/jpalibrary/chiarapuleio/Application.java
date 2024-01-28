@@ -104,7 +104,7 @@ public class Application {
         System.out.println("----- SEARCH LOANS -----");
         //qui ho dovuto usare direttamente l'oggetto User come parametro per come ho inserito le relazioni tra le entities
         System.out.println(loanDAO.searchLibraryOnLoanByUser(user));
-        System.out.println(loanDAO.searchExpiredLoan(user));
+        System.out.println(loanDAO.searchExpiredLoan());
 
         emf.close();
         em.close();

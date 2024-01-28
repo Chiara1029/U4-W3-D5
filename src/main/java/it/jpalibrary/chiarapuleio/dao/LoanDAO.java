@@ -42,7 +42,7 @@ public class LoanDAO {
         query.setParameter("user", user);
         return query.getResultList();
     }
-    public List<Loan> searchExpiredLoan(User user){
+    public List<Loan> searchExpiredLoan(){
         TypedQuery<Loan> query = em.createQuery("SELECT l FROM Loan l WHERE CURRENT_DATE > restitution", Loan.class);
         return query.getResultList();
     }

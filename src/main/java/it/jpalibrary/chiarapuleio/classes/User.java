@@ -2,6 +2,7 @@ package it.jpalibrary.chiarapuleio.classes;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -17,6 +18,7 @@ public class User {
     private Date dateOfBirth;
 
     @OneToMany(mappedBy = "user")
+    @Column(name="user_loans")
     private Set<Loan> userLoans;
 
     public User() {
@@ -26,6 +28,7 @@ public class User {
         this.name = name;
         this.surname = surname;
         this.dateOfBirth = dateOfBirth;
+        this.userLoans = new HashSet<>();
     }
 
     public String getName() {

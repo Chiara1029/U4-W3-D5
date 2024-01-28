@@ -31,7 +31,7 @@ public class LibraryArchiveDAO {
             query.setParameter("isbn", isbn);
             return query.getSingleResult();
         } catch (NoResultException e) {
-            System.err.println(e.getMessage());
+            System.err.println(e.getMessage() + " No books found for this ISBN.");
             return null;
         }
     }
@@ -62,7 +62,7 @@ public class LibraryArchiveDAO {
             query.setParameter("isbn", isbn);
             return query.getSingleResult();
         } catch (NoResultException e) {
-            System.err.println(e.getMessage());
+            System.err.println(e.getMessage() + " No magazine found for this ISBN.");
             return null;
         }
     }
@@ -93,7 +93,7 @@ public class LibraryArchiveDAO {
             }
             return resultList;
         } catch (NoResultException e) {
-            System.err.println("No Books found for year " + publicationYear);
+            System.err.println(e.getMessage() + "No Books found for year " + publicationYear);
             return Collections.emptyList();
         }
     }
@@ -114,17 +114,17 @@ public class LibraryArchiveDAO {
             }
             return resultList;
         } catch (NoResultException e) {
-            System.err.println("No Books found for year " + publicationYear);
+            System.err.println(e.getMessage() + "No Books found for year " + publicationYear);
             return Collections.emptyList();
         }
     }
-    public Book searchBookByAuthor(String author) {
+    public List<Book> searchBookByAuthor(String author) {
         try {
             TypedQuery<Book> query = em.createQuery("SELECT fa FROM Book fa WHERE fa.author = :author", Book.class);
             query.setParameter("author", author);
-            return query.getSingleResult();
+            return query.getResultList();
         } catch (NoResultException e) {
-            System.err.println(e.getMessage());
+            System.err.println(e.getMessage() + "No Books found for author " + author);
             return null;
         }
     }
@@ -136,7 +136,8 @@ public class LibraryArchiveDAO {
     }
 
     public List<Magazine> searchMagazineByTitle(String title) {
-        TypedQuery<Magazine> query = em.createQuery("SELECT m FROM Magazine m WHERE LOWER(m.title) LIKE LOWER(:title)", Magazine.class).setParameter("title", "%" + title + "%");
+        TypedQuery<Magazine> query = em.createQuery("SELECT m FROM Magazine m WHERE LOWER(m.title) LIKE LOWER(:title)", Magazine.class);
+        query.setParameter("title", "%" + title + "%");
         return query.getResultList();
     }
 }

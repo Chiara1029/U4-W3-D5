@@ -1,9 +1,12 @@
 package it.jpalibrary.chiarapuleio.dao;
 
 import it.jpalibrary.chiarapuleio.classes.Loan;
+import it.jpalibrary.chiarapuleio.classes.User;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.persistence.TypedQuery;
+import java.util.List;
 
 public class LoanDAO {
     private EntityManager em;
@@ -33,4 +36,16 @@ public class LoanDAO {
             System.out.println("Loan of " + foundLoan.getLoanedItem().getTitle() + " has been deleted.");
         } else System.out.println("Loan not found.");
     }
+
+    public List<Loan> searchLibraryOnLoanByUser(User user){
+        TypedQuery<Loan> query = em.createQuery("SELECT l FROM Loan l WHERE l.user = :user AND current_date < restitution", Loan.class);
+        query.setParameter("user", user);
+        return query.getResultList();
+    }
+    public List<Loan> searchExpiredLoan(User user){
+        TypedQuery<Loan> query = em.createQuery("SELECT l FROM Loan l WHERE current_date > restitution", Loan.class);
+        return query.getResultList();
+    }
+
+
 }

@@ -38,12 +38,12 @@ public class LoanDAO {
     }
 
     public List<Loan> searchLibraryOnLoanByUser(User user){
-        TypedQuery<Loan> query = em.createQuery("SELECT l FROM Loan l WHERE l.user = :user AND current_date < restitution", Loan.class);
+        TypedQuery<Loan> query = em.createQuery("SELECT l FROM Loan l WHERE l.user = :user AND CURRENT_DATE < l.restitution", Loan.class);
         query.setParameter("user", user);
         return query.getResultList();
     }
     public List<Loan> searchExpiredLoan(User user){
-        TypedQuery<Loan> query = em.createQuery("SELECT l FROM Loan l WHERE current_date > restitution", Loan.class);
+        TypedQuery<Loan> query = em.createQuery("SELECT l FROM Loan l WHERE CURRENT_DATE > restitution", Loan.class);
         return query.getResultList();
     }
 
